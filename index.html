@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyFlow — Smart Study Scheduler</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="hamburger" onclick="toggleSidebar()" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="logo">
+        <div class="logo-icon">📚</div>
+        StudyFlow
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="algo-pill" onclick="nav('algo')">
+        <span class="dot" id="top-dot"></span>
+        <span id="top-algo-name">Greedy Algorithm</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="runScheduler()">⚡ Generate Plan</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <div class="nav-item active" onclick="nav('sessions')" id="nav-sessions">
+        <span class="nav-icon">📋</span> Sessions
+      </div>
+      <div class="nav-item" onclick="nav('algo')" id="nav-algo">
+        <span class="nav-icon">🧠</span> Algorithm
+      </div>
+      <div class="nav-item" onclick="nav('result')" id="nav-result">
+        <span class="nav-icon">📊</span> Optimal Plan
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="sb-total">0</div>
+        <div class="mini-stat-label">Total sessions added</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="sb-selected" style="color:var(--green)">—</div>
+        <div class="mini-stat-label">Sessions selected</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="sb-hours" style="color:var(--accent2)">—</div>
+        <div class="mini-stat-label">Total study hours</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Priority Legend</div>
+      <div class="priority-legend">
+        <div class="pleg"><div class="pleg-dot" style="background:#f87171"></div>P1 — Critical</div>
+        <div class="pleg"><div class="pleg-dot" style="background:#fbbf24"></div>P2 — High</div>
+        <div class="pleg"><div class="pleg-dot" style="background:#60a5fa"></div>P3 — Medium</div>
+        <div class="pleg"><div class="pleg-dot" style="background:#9ca3af"></div>P4 — Low</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Actions</div>
+      <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;margin-bottom:4px" onclick="loadSample()">📥 Load sample data</button>
+      <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;margin-bottom:4px" onclick="clearAll()">🗑 Clear all sessions</button>
+      <button class="btn btn-ghost" style="width:100%;justify-content:flex-start" onclick="exportPlan()">⬇ Export plan (txt)</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- SESSIONS VIEW -->
+    <div class="view active" id="view-sessions">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Study Sessions</div>
+          <div class="page-sub">Add all your upcoming exam study sessions with time blocks and priorities</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" onclick="loadSample()">📥 Sample data</button>
+          <button class="btn btn-primary" onclick="addSessionRow()">+ Add session</button>
+        </div>
+      </div>
+
+      <div class="sessions-wrap">
+        <div class="sessions-head">
+          <span>Subject / Topic</span>
+          <span>Start time</span>
+          <span>End time</span>
+          <span>Priority</span>
+          <span></span>
+        </div>
+        <div class="sessions-body" id="sessions-body"></div>
+        <div class="add-row">
+          <button class="btn btn-ghost btn-sm" onclick="addSessionRow()">+ Add row</button>
+          <span id="row-count" style="font-size:12px;color:var(--muted)">0 sessions</span>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn" onclick="nav('algo')">Choose Algorithm →</button>
+      </div>
+    </div>
+
+    <!-- ALGO VIEW -->
+    <div class="view" id="view-algo">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Select Algorithm</div>
+          <div class="page-sub">Each algorithm solves a different variant of the interval scheduling problem</div>
+        </div>
+      </div>
+
+      <div class="algo-grid">
+        <div class="algo-card selected" id="card-greedy" onclick="selectAlgo('greedy')">
+          <div class="selected-check">✓</div>
+          <div class="algo-card-icon" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2)">🟢</div>
+          <div class="algo-card-name">Greedy Scheduling</div>
+          <div class="algo-card-tag">Max sessions · O(n log n)</div>
+          <div class="algo-card-desc">Sort by finish time and greedily pick each non-overlapping session. Provably optimal for maximising the count of sessions. Best when all subjects matter equally.</div>
+          <div style="margin-top:.75rem;display:flex;gap:6px;flex-wrap:wrap">
+            <div class="algo-card-badge">✓ Maximum sessions</div>
+            <div class="algo-card-badge">Activity Selection</div>
+          </div>
+        </div>
+
+        <div class="algo-card" id="card-weighted" onclick="selectAlgo('weighted')">
+          <div class="selected-check">✓</div>
+          <div class="algo-card-icon" style="background:rgba(124,111,255,.1);border:1px solid rgba(124,111,255,.2)">🔵</div>
+          <div class="algo-card-name">Weighted DP</div>
+          <div class="algo-card-tag">Max priority · O(n log n)</div>
+          <div class="algo-card-desc">Dynamic programming with binary search. Finds the subset of non-overlapping sessions with the highest total priority score. Best when exam criticality differs.</div>
+          <div style="margin-top:.75rem;display:flex;gap:6px;flex-wrap:wrap">
+            <div class="algo-card-badge">✓ Max priority score</div>
+            <div class="algo-card-badge">DP + Bsearch</div>
+          </div>
+        </div>
+
+        <div class="algo-card" id="card-partition" onclick="selectAlgo('partition')">
+          <div class="selected-check">✓</div>
+          <div class="algo-card-icon" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2)">🟡</div>
+          <div class="algo-card-name">Interval Partitioning</div>
+          <div class="algo-card-tag">All sessions · O(n log n)</div>
+          <div class="algo-card-desc">Assigns ALL sessions to the minimum number of parallel study tracks. No session is dropped. Minimum tracks equals maximum overlap depth at any point.</div>
+          <div style="margin-top:.75rem;display:flex;gap:6px;flex-wrap:wrap">
+            <div class="algo-card-badge">✓ Zero sessions dropped</div>
+            <div class="algo-card-badge">Min rooms greedy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- complexity table -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:1.5rem;margin-bottom:1.5rem">
+        <div style="font-family:var(--font-head);font-size:14px;font-weight:600;margin-bottom:1rem">Algorithm Comparison</div>
+        <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border)">
+              <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Algorithm</th>
+              <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Problem type</th>
+              <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Complexity</th>
+              <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Drops sessions?</th>
+              <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Best for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 12px;font-weight:500">Greedy</td>
+              <td style="padding:10px 12px;color:var(--muted)">Interval Scheduling</td>
+              <td style="padding:10px 12px"><code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:11px">O(n log n)</code></td>
+              <td style="padding:10px 12px;color:var(--amber)">Yes</td>
+              <td style="padding:10px 12px;color:var(--muted)">Equal-weight sessions</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 12px;font-weight:500">Weighted DP</td>
+              <td style="padding:10px 12px;color:var(--muted)">Weighted Interval Sched.</td>
+              <td style="padding:10px 12px"><code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:11px">O(n log n)</code></td>
+              <td style="padding:10px 12px;color:var(--amber)">Yes</td>
+              <td style="padding:10px 12px;color:var(--muted)">Priority-based exams</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 12px;font-weight:500">Partitioning</td>
+              <td style="padding:10px 12px;color:var(--muted)">Interval Partitioning</td>
+              <td style="padding:10px 12px"><code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:11px">O(n log n)</code></td>
+              <td style="padding:10px 12px;color:var(--green)">No</td>
+              <td style="padding:10px 12px;color:var(--muted)">Multi-track scheduling</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-primary" onclick="runScheduler()">⚡ Generate Optimal Plan →</button>
+      </div>
+    </div>
+
+    <!-- RESULT VIEW -->
+    <div class="view" id="view-result">
+      <div id="result-area">
+        <div class="empty">
+          <div class="empty-icon">📊</div>
+          <div class="empty-title">No plan generated yet</div>
+          <div class="empty-sub">Add sessions and click "Generate Plan" to see results</div>
+          <br>
+          <button class="btn btn-primary" onclick="nav('sessions')">← Add Sessions</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="script.js" ></script>
+</body>
+</html>
