@@ -3,14 +3,14 @@ let sid = 0;
 let algoMode = 'greedy';
 
 const SUBJECT_COLORS = [
-  { bar: '#7c6fff', text: '#c4bfff', light: 'rgba(124,111,255,.15)' },
-  { bar: '#34d399', text: '#6ee7b7', light: 'rgba(52,211,153,.15)' },
-  { bar: '#f87171', text: '#fca5a5', light: 'rgba(248,113,113,.15)' },
-  { bar: '#fbbf24', text: '#fcd34d', light: 'rgba(251,191,36,.15)' },
-  { bar: '#60a5fa', text: '#93c5fd', light: 'rgba(96,165,250,.15)' },
-  { bar: '#f472b6', text: '#f9a8d4', light: 'rgba(244,114,182,.15)' },
-  { bar: '#a78bfa', text: '#c4b5fd', light: 'rgba(167,139,250,.15)' },
-  { bar: '#2dd4bf', text: '#81e6d9', light: 'rgba(45,212,191,.15)' },
+  { bar: '#7c6fff', text: '#c4bfff', dark: '#5b4fd1', light: 'rgba(124,111,255,.15)' },
+  { bar: '#34d399', text: '#6ee7b7', dark: '#0d9268', light: 'rgba(52,211,153,.15)' },
+  { bar: '#f87171', text: '#fca5a5', dark: '#c53a3a', light: 'rgba(248,113,113,.15)' },
+  { bar: '#fbbf24', text: '#fcd34d', dark: '#a06a06', light: 'rgba(251,191,36,.15)' },
+  { bar: '#60a5fa', text: '#93c5fd', dark: '#2662c9', light: 'rgba(96,165,250,.15)' },
+  { bar: '#f472b6', text: '#f9a8d4', dark: '#c23e83', light: 'rgba(244,114,182,.15)' },
+  { bar: '#a78bfa', text: '#c4b5fd', dark: '#6d4fd1', light: 'rgba(167,139,250,.15)' },
+  { bar: '#2dd4bf', text: '#81e6d9', dark: '#128a7a', light: 'rgba(45,212,191,.15)' },
 ];
 
 function subjectColor(i) { return SUBJECT_COLORS[i % SUBJECT_COLORS.length]; }
@@ -264,12 +264,12 @@ function runScheduler() {
     rooms.forEach((room, ri) => {
       const tc = trackColors[ri % trackColors.length];
       html += `<div class="plan-wrap">
-        <div class="plan-head"><span>Track ${ri + 1}</span><span class="badge" style="background:rgba(255,255,255,.06);color:var(--muted)">${room.length} sessions</span></div>`;
+        <div class="plan-head"><span>Track ${ri + 1}</span><span class="badge" style="background:rgba(20,22,40,.06);color:var(--muted)">${room.length} sessions</span></div>`;
       room.sort((a, b) => a.startMin - b.startMin).forEach((s, idx) => {
         const col = subjectColor(subjMap[s.subject]);
         const dur = s.endMin - s.startMin;
         html += `<div class="plan-item">
-          <div class="plan-num" style="background:${col.light};border-color:${col.bar}30;color:${col.text}">${idx + 1}</div>
+          <div class="plan-num" style="background:${col.light};border-color:${col.bar}30;color:${col.dark}">${idx + 1}</div>
           <div>
             <div class="plan-subject">${s.subject}</div>
             <div class="plan-meta">
@@ -324,7 +324,7 @@ function runScheduler() {
       const col = subjectColor(subjMap[s.subject]);
       const dur = s.endMin - s.startMin;
       html += `<div class="plan-item">
-        <div class="plan-num" style="background:${col.light};border-color:${col.bar}30;color:${col.text}">${i + 1}</div>
+        <div class="plan-num" style="background:${col.light};border-color:${col.bar}30;color:${col.dark}">${i + 1}</div>
         <div>
           <div class="plan-subject">${s.subject}</div>
           <div class="plan-meta">
