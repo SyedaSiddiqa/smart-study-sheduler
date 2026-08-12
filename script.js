@@ -1,3 +1,29 @@
+// ── theme toggle ──
+function initTheme() {
+  const saved = localStorage.getItem('studyflow-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeButton();
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  const newTheme = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('studyflow-theme', newTheme);
+  updateThemeButton();
+}
+
+function updateThemeButton() {
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const btn = document.getElementById('theme-btn');
+  if (btn) {
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+}
+
+// Initialize theme on load
+document.addEventListener('DOMContentLoaded', initTheme);
+
 let sessions = [];
 let sid = 0;
 let algoMode = 'greedy';
