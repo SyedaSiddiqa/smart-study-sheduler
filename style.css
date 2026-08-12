@@ -1,25 +1,53 @@
+/* Dark Theme (Default) */
 :root {
-  --bg: #f6f7fb;
-  --surface: #ffffff;
-  --surface2: #f1f2f8;
-  --surface3: #e5e7f2;
-  --border: rgba(20, 22, 40, 0.08);
-  --border2: rgba(20, 22, 40, 0.14);
-  --text: #14151f;
-  --muted: rgba(20, 21, 31, 0.55);
-  --dim: rgba(20, 21, 31, 0.35);
-  --accent: #7c6fff;
-  --accent2: #6d5ce8;
-  --accent-glow: rgba(124, 111, 255, 0.12);
-  --green: #34d399;
+  --bg: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface2: #2a2a2a;
+  --surface3: #3d0814;
+  --border: rgba(225, 226, 137, 0.12);
+  --border2: rgba(225, 226, 137, 0.2);
+  --text: #e1e289;
+  --muted: rgba(225, 226, 137, 0.6);
+  --dim: rgba(225, 226, 137, 0.4);
+  --accent: #e1e289;
+  --accent2: #d4d670;
+  --accent-glow: rgba(225, 226, 137, 0.15);
+  --green: #4ade80;
   --amber: #fbbf24;
-  --red: #f87171;
+  --red: #ff6b6b;
   --blue: #60a5fa;
   --pink: #f472b6;
   --r: 10px;
   --r2: 16px;
   --font-head: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
+  --topbar-bg: rgba(26, 26, 26, 0.95);
+  --select-option-bg: #1a1a1a;
+  --btn-primary-hover: #d4d670;
+}
+
+/* Light Theme */
+html[data-theme="light"] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface2: #f1f2f8;
+  --surface3: #e1e289;
+  --border: rgba(225, 226, 137, 0.25);
+  --border2: rgba(225, 226, 137, 0.35);
+  --text: #3d0814;
+  --muted: rgba(61, 8, 20, 0.65);
+  --dim: rgba(61, 8, 20, 0.45);
+  --accent: #3d0814;
+  --accent2: #5a1025;
+  --accent-glow: rgba(225, 226, 137, 0.25);
+  --green: #34d399;
+  --amber: #fbbf24;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --pink: #f472b6;
+  --topbar-bg: rgba(255, 255, 255, 0.95);
+  --select-option-bg: #ffffff;
+  --btn-primary-hover: #5a1025;
 }
 
 *,
@@ -71,7 +99,7 @@ body {
   padding: 0 2rem;
   height: 60px;
   border-bottom: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--topbar-bg);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -311,8 +339,9 @@ body {
 }
 
 .btn-primary:hover {
-  background: #6c5fe8;
-  border-color: #6c5fe8;
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+  color: #fff;
 }
 
 .btn-ghost {
@@ -413,7 +442,8 @@ body {
 }
 
 .session-row select option {
-  background: #ffffff;
+  background: var(--select-option-bg);
+  color: var(--text);
 }
 
 .row-actions {
