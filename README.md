@@ -1,8 +1,38 @@
 # StudyFlow — Smart Study Scheduler
+## 4th Semester Analysis of Algorithms Project
 
 A modern, algorithm-powered study session scheduler that optimizes your exam preparation using advanced interval scheduling techniques.
 
-## 🎯 Features
+## 🎓 Academic Project Context
+
+**StudyFlow** is a 4th semester Analysis of Algorithms project that demonstrates:
+
+### Algorithms Covered
+1. **Activity Selection Problem** (Greedy Algorithm)
+   - Proof of correctness
+   - Time complexity: O(n log n)
+   - Maximize number of non-overlapping intervals
+
+2. **Weighted Interval Scheduling** (Dynamic Programming)
+   - Binary search optimization
+   - Time complexity: O(n log n)
+   - Maximize total weight/priority value
+
+3. **Interval Partitioning** (Graph Coloring)
+   - Greedy assignment strategy
+   - Time complexity: O(n log n)
+   - Minimum resources for all intervals
+
+### Learning Outcomes
+✓ Greedy algorithm design and proof techniques  
+✓ Dynamic programming with optimization  
+✓ Interval graph problems and properties  
+✓ Algorithm complexity analysis (Big-O notation)  
+✓ Full-stack implementation (algorithms → UI)  
+
+---
+
+## 🚀 Features
 
 - **Three Scheduling Algorithms**
   - **Greedy Scheduling**: Maximize the number of study sessions (Activity Selection Problem)
